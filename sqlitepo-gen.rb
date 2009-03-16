@@ -69,9 +69,9 @@ class SqlitePOGenerator
   end
 
   def self.generate_files(object)
-    template_files = `ls sqlitepo-templates`.split(/\n/)
+    template_files = `ls #{File.dirname(__FILE__)}/sqlitepo-templates`.split(/\n/)
     template_files.each do |template_file|
-      file = File.new File.join("sqlitepo-templates", template_file), 'r'
+      file = File.new "#{File.dirname(__FILE__)}/sqlitepo-templates/#{template_file}", 'r'
       template = ERB.new file.read, nil, "-"
       file.close
       
