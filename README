@@ -46,7 +46,7 @@ $ cat myapp/User.m
 
 @implementation User
 
-@synthesize username, name, userId, followersCount;
+@synthesize username, userId;
 
 DECLARE_PROPERTIES(
   DECLARE_PROPERTY(@"username", @"@\"NSString\""),
