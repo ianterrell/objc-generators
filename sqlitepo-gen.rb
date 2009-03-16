@@ -1,16 +1,3 @@
-# ----------------------------------------------------------------------
-# Original Version: (c) 2009 Ian Terrell (ian.terrell@gmail.com)
-# ----------------------------------------------------------------------
-# This code may be used without restriction in any software, commercial,
-# free, or otherwise. There are no attribution requirements, and no
-# requirement that you distribute your changes, although bugfixes and 
-# enhancements are welcome.
-# 
-# If you do choose to re-distribute the source code, you must retain the
-# copyright notice and this license information. I also request that you
-# place comments in to identify your changes.
-# ----------------------------------------------------------------------
-
 require 'erb'
 require 'fileutils'
 require 'rubygems'
