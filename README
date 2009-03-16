@@ -9,6 +9,8 @@ class Objects < SqlitePOGenerator
   persistent_object :user do |user|
     user.string :username
     user.integer :user_id
+    user.belongs_to :group
+    user.belongs_to :group, :name => :another_group
   end
 end
 $ ruby myapp.rb
@@ -24,13 +26,19 @@ $ cat myapp/User.h
 #import <Foundation/Foundation.h>
 #import "SQLitePersistentObject.h"
 
+@class Group;
+
 @interface User : SQLitePersistentObject {
   NSString *username;
   NSInteger userId;
+  Group *group;
+  Group *anotherGroup;
 }
 
 @property (nonatomic,readwrite,retain) NSString *username;
 @property (nonatomic,readwrite) NSInteger userId;
+@property (nonatomic,readwrite,retain) Group *group;
+@property (nonatomic,readwrite,retain) Group *anotherGroup;
 
 @end
 $ cat myapp/User.m 
@@ -46,16 +54,20 @@ $ cat myapp/User.m
 
 @implementation User
 
-@synthesize username, userId;
+@synthesize username, userId, group, anotherGroup;
 
 DECLARE_PROPERTIES(
   DECLARE_PROPERTY(@"username", @"@\"NSString\""),
   DECLARE_PROPERTY(@"userId", @"@\"NSInteger\""),
+  DECLARE_PROPERTY(@"group", @"@\"Group\""),
+  DECLARE_PROPERTY(@"anotherGroup", @"@\"Group\"")
 )
 
 - (void)dealloc
 {
   [username release];
+  [group release];
+  [anotherGroup release];
 	[super dealloc];
 }
 
