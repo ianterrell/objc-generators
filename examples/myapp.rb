@@ -17,6 +17,4 @@ class Objects < SqlitePOGenerator
     group.string :description
     group.integer :group_id
   end
-  
-  
 end
