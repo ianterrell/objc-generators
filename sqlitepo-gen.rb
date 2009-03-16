@@ -32,7 +32,7 @@ class SqlitePO
   end
   
   def belongs_to(object, options={})
-    @class_references << object.to_s.camelize
+    @class_references << object.to_s.camelize unless @class_references.include?(object.to_s.camelize)
     name = options[:name] || object
     @fields << { :type => "#{object.to_s.camelize} *", :name => name.to_s.camelize(:lower) }
   end
