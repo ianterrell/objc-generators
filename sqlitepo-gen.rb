@@ -17,17 +17,24 @@ require 'rubygems'
 require 'activesupport'
 
 class SqlitePO
-  attr_accessor :name, :fields
+  attr_accessor :name, :fields, :class_references
   
   def initialize(name)
     @name = name.to_s.camelize
     @fields = []
+    @class_references = []
   end
   
   [:string, :integer].each do |field_type|
     define_method field_type do |field_name|
-      @fields << {:type => self.class.objc_type(field_type), :name => field_name.to_s.camelize(:lower) }
+      @fields << { :type => self.class.objc_type(field_type), :name => field_name.to_s.camelize(:lower) }
     end
+  end
+  
+  def belongs_to(object, options={})
+    @class_references << object.to_s.camelize
+    name = options[:name] || object
+    @fields << { :type => "#{object.to_s.camelize} *", :name => name.to_s.camelize(:lower) }
   end
   
   def field_names

@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "SQLitePersistentObject.h"
 
+<% object.class_references.each do |clazz| -%>
+@class <%= clazz %>;
+<% end -%>
+
 @interface <%= object.name %> : SQLitePersistentObject {
 <% object.fields.each do |field| -%>
   <%= field[:type] %><%= field[:name] %>;
