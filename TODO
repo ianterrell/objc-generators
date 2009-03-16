@@ -1,0 +1,8 @@
+Add lazy-loading association methods to generated classes if proven helpful.
+
+i.e., from http://groups.google.com/group/sqlitepersistentobjects-user/browse_thread/thread/b84066a07456234b:
+
+- (NSArray *)children {
+  NSArray *children = [self findRelated:[Children class]];
+  return children;
+}
