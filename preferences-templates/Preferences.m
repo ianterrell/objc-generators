@@ -19,7 +19,7 @@
 <% object.bulk_setters.each do |setter| -%>
 +(void)<%= object.bulk_setter_name_for(setter) %> {
 <% setter.each do |field| -%>
-  [[NSUserDefaults standardUserDefaults] <%= object.setter_for_key(field[:type])%>:username forKey:@"<%= field[:name]%>"];
+  [[NSUserDefaults standardUserDefaults] <%= object.setter_for_key(field[:type])%>:<%= field[:name] %> forKey:@"<%= field[:name]%>"];
 <% end -%>
 }
 <% end -%>
