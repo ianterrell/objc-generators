@@ -1,3 +1,12 @@
+###
+# Overall
+
+- Combine all generators in one mega ProjectGenerator so that repetitive directory, project commands can be skipped.
+- Optionally make directory take a block that only generates in that directory, versus setting project wide setting.
+
+###
+# SqlitePOGenerator
+
 Add lazy-loading association methods to generated classes if proven helpful.
 
 i.e., from http://groups.google.com/group/sqlitepersistentobjects-user/browse_thread/thread/b84066a07456234b:

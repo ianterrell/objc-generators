@@ -1,4 +1,5 @@
 require '../sqlitepo-gen'
+require '../preferences-gen'
 
 class Objects < SqlitePOGenerator
   project_name "MyApp"
@@ -17,5 +18,17 @@ class Objects < SqlitePOGenerator
     group.string :title
     group.string :description
     group.integer :group_id
+  end
+end  
+
+class MyPreferences < PreferencesGenerator
+  project_name "MyApp"
+  directory "myapp"
+  author "Ian Terrell"
+  
+  preferences do |p|
+    p.string :username
+    p.string :password
+    p.bulk_setter_for :username, :password
   end
 end

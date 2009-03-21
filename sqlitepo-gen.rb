@@ -1,7 +1,4 @@
-require 'erb'
-require 'fileutils'
-require 'rubygems'
-require 'activesupport'
+require "#{File.dirname(__FILE__)}/base-gen"
 
 class SqlitePO
   attr_accessor :name, :fields, :class_references, :enums
@@ -15,7 +12,7 @@ class SqlitePO
   
   [:string, :integer].each do |field_type|
     define_method field_type do |field_name|
-      @fields << { :type => self.class.objc_type(field_type), :name => field_name.to_s.camelize(:lower) }
+      @fields << { :type => ObjC.type_for(field_type), :name => field_name.to_s.camelize(:lower) }
     end
   end
   
@@ -35,35 +32,9 @@ class SqlitePO
   def field_names
     @fields.map { |field| field[:name] }
   end
-    
-  def self.objc_type(type)
-    case type
-    when :integer
-      "NSInteger "
-    when :string
-      "NSString *"
-    end
-  end
 end
 
-class SqlitePOGenerator
-  def initialize
-    @directory = "."
-  end
-  
-  def self.directory(directory)
-    @directory = directory
-    FileUtils.mkdir @directory unless File.directory? @directory
-  end
-  
-  def self.author(author)
-    @author = author
-  end
-  
-  def self.project_name(project_name)
-    @project_name = project_name
-  end
-  
+class SqlitePOGenerator < BaseGenerator  
   def self.persistent_object(object_name)
     object = SqlitePO.new object_name
     yield(object)
