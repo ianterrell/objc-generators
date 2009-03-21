@@ -23,10 +23,10 @@
 }
 
 +(NSString *)username {
-  return [[NSUserDefaults standardUserDefaults] NSString *ForKey:@"username"];
+  return [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
 }
 +(NSString *)password {
-  return [[NSUserDefaults standardUserDefaults] NSString *ForKey:@"password"];
+  return [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
 }
 
 @end

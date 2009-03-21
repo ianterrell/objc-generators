@@ -33,7 +33,7 @@ class Preferences
   def is_set?(field)
     case field[:symbol_type]
     when :string:
-       "(([Preferences #{field[:name]}] == nil) || ([[Preferences #{field[:name]}] isEqualToString:@""]))"
+       %~(([Preferences #{field[:name]}] == nil) || ([[Preferences #{field[:name]}] isEqualToString:@""]))~
     end
   end
   

@@ -10,7 +10,7 @@
 
 @implementation Preferences
 
-+(BOOL)preferenceSet {
++(BOOL)preferencesSet {
   return !(
     <%= object.fields.map{|field|object.is_set?(field)}.join(" || \n    ") %>
   );
@@ -26,7 +26,7 @@
 
 <% object.fields.each do |field| -%>
 +(<%= field[:type] %>)<%= field[:name] %> {
-  return [[NSUserDefaults standardUserDefaults] <%= object.type_for_key(field[:type])%>:@"<%= field[:name] %>"];
+  return [[NSUserDefaults standardUserDefaults] <%= object.type_for_key(field[:symbol_type])%>:@"<%= field[:name] %>"];
 }
 <% end -%>
 
