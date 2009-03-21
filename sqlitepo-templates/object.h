@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "SQLitePersistentObject.h"
 
+<% object.enums.each do |enum| -%>
+<% enum.each_pair do |name, values| -%>
+typedef enum {
+  <%= values.join(",\n  ")%>
+} <%= name %>;
+<% end -%>
+<% end -%>
+
 <% object.class_references.each do |clazz| -%>
 @class <%= clazz %>;
 <% end -%>

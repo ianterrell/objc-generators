@@ -4,18 +4,26 @@ require 'rubygems'
 require 'activesupport'
 
 class SqlitePO
-  attr_accessor :name, :fields, :class_references
+  attr_accessor :name, :fields, :class_references, :enums
   
   def initialize(name)
     @name = name.to_s.camelize
     @fields = []
     @class_references = []
+    @enums = []
   end
   
   [:string, :integer].each do |field_type|
     define_method field_type do |field_name|
       @fields << { :type => self.class.objc_type(field_type), :name => field_name.to_s.camelize(:lower) }
     end
+  end
+  
+  def enum(field_name, options={})
+    raise "Needs values!" unless options.has_key? :values
+    name = options[:name] ? options[:name].to_s.camelize : "#{@name}#{field_name.to_s.camelize}"
+    @fields << { :type => "#{name} ", :name => field_name.to_s.camelize(:lower) }
+    @enums << { name => options[:values].uniq.map{|x|x.to_s.camelize} }
   end
   
   def belongs_to(object, options={})

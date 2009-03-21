@@ -8,6 +8,7 @@ class Objects < SqlitePOGenerator
   persistent_object :user do |user|
     user.string :username
     user.integer :user_id
+    user.enum :state, :values => [:fired, :fired, :super_fired]
     user.belongs_to :group
     user.belongs_to :group, :name => :another_group
   end
