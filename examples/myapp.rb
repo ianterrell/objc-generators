@@ -18,6 +18,10 @@ class Objects < SqlitePOGenerator
     group.string :title
     group.string :description
     group.integer :group_id
+    group.method "+(NSString *)helloWorld" do <<-OBJC
+      return @"Hello World!";
+      OBJC
+    end
   end
 end  
 
@@ -30,5 +34,9 @@ class MyPreferences < PreferencesGenerator
     p.string :username
     p.string :password
     p.bulk_setter_for :username, :password
+    p.method "+(NSString *)helloWorld" do <<-OBJC
+      return @"Hello World!";
+      OBJC
+    end
   end
 end

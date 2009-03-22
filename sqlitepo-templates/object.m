@@ -18,6 +18,12 @@ DECLARE_PROPERTIES(
 <% end -%>
 )
 
+<% object.methods.each do |method| -%>
+<%= method[:signature] %> {
+<%= method[:code] %>
+}
+<% end -%>
+
 - (void)dealloc
 {
 <% object.fields.select{|field|field[:type].ends_with?("*")}.each do |field| -%>

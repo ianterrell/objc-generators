@@ -22,6 +22,17 @@ class BaseGenerator
   end
 end
 
+class BaseGeneratorObject
+  attr_reader :methods
+  def initialize
+    @methods = []
+  end
+  def method(signature)
+    code = yield
+    @methods << {:signature => signature, :code => code}
+  end
+end
+
 class ObjC
   def self.type_for(type)
     case type

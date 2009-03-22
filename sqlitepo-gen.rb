@@ -1,9 +1,10 @@
 require "#{File.dirname(__FILE__)}/base-gen"
 
-class SqlitePO
+class SqlitePO < BaseGeneratorObject
   attr_accessor :name, :fields, :class_references, :enums
   
   def initialize(name)
+    super()
     @name = name.to_s.camelize
     @fields = []
     @class_references = []

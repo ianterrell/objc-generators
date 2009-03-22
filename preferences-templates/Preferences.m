@@ -30,4 +30,10 @@
 }
 <% end -%>
 
+<% object.methods.each do |method| -%>
+<%= method[:signature] %> {
+<%= method[:code] %>
+}
+<% end -%>
+
 @end

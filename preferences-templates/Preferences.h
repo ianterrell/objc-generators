@@ -21,4 +21,8 @@
 +(<%= field[:type] %>)<%= field[:name] %>;
 <% end -%>
 
+<% object.methods.each do |method| -%>
+<%= method[:signature] %>;
+<% end -%>
+
 @end

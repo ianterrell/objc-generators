@@ -31,4 +31,8 @@ typedef enum {
 @property (nonatomic,readwrite<%= ",retain" if field[:type].ends_with?("*") %>) <%= field[:type] %><%= field[:name] %>;
 <% end -%>
 
+<% object.methods.each do |method| -%>
+<%= method[:signature] %>;
+<% end -%>
+
 @end

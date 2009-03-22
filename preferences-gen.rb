@@ -1,9 +1,10 @@
 require "#{File.dirname(__FILE__)}/base-gen"
 
-class Preferences
-  attr_accessor :name, :fields, :bulk_setters
+class Preferences < BaseGeneratorObject
+  attr_reader :name, :fields, :bulk_setters
   
   def initialize
+    super
     @fields = []
     @types = {}
     @bulk_setters = []
