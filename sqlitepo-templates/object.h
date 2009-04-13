@@ -35,4 +35,6 @@ typedef enum {
 <%= method[:signature] %>;
 <% end -%>
 
++(void)deleteAll;
+
 @end

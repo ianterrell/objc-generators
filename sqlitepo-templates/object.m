@@ -7,6 +7,7 @@
 //
 
 #import "<%= object.name %>.h"
+#import "SQLiteInstanceManager.h"
 
 @implementation <%= object.name %>
 
@@ -23,6 +24,15 @@ DECLARE_PROPERTIES(
 <%= method[:code] %>
 }
 <% end -%>
+
++(void)deleteAll {
+	NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@;", [<%= object.name %> tableName]];
+  NSLog([NSString stringWithFormat:@"Executing SQL:  DELETE FROM %@;", [<%= object.name %> tableName]]);
+  SQLiteInstanceManager *manager = [SQLiteInstanceManager sharedManager];
+  [manager executeUpdateSQL:sql];
+  [manager vacuum];
+  [<%= object.name %> clearCache];
+}
 
 - (void)dealloc
 {

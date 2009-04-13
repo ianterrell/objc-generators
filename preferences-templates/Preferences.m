@@ -10,6 +10,10 @@
 
 @implementation Preferences
 
+<% object.fields.each do |field| -%>
+<%= field[:type] %> _<%= field[:name] %>;
+<% end -%>
+
 +(BOOL)preferencesSet {
   return !(
     <%= object.fields.map{|field|object.is_set?(field)}.join(" || \n    ") %>
@@ -20,13 +24,16 @@
 +(void)<%= object.bulk_setter_name_for(setter) %> {
 <% setter.each do |field| -%>
   [[NSUserDefaults standardUserDefaults] <%= object.setter_for_key(field[:type])%>:<%= field[:name] %> forKey:@"<%= field[:name]%>"];
+	_<%= field[:name] %> = <%= field[:name] %>;
 <% end -%>
 }
 <% end -%>
 
 <% object.fields.each do |field| -%>
 +(<%= field[:type] %>)<%= field[:name] %> {
-  return [[NSUserDefaults standardUserDefaults] <%= object.type_for_key(field[:symbol_type])%>:@"<%= field[:name] %>"];
+	if (_<%= field[:name] %> == nil)
+		_<%= field[:name] %> = [[NSUserDefaults standardUserDefaults] <%= object.type_for_key(field[:symbol_type])%>:@"<%= field[:name] %>"];
+	return _<%= field[:name] %>;
 }
 <% end -%>
 
