@@ -38,6 +38,8 @@ class ObjC
     case type
     when :integer
       "NSInteger "
+    when :number
+      "NSNumber *"
     when :string
       "NSString *"
     end
