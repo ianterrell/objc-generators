@@ -8,10 +8,20 @@
 
 #import "<%= object.name %>.h"
 #import "Frank.h"
+<% object.class_includes.each do |c| -%>
+#import "<%= c %>.h"
+<% end -%>
+
 
 @implementation <%= object.name %>
 
 @synthesize <%= object.field_names.join(', ') %>;
+<% unless object.belongs_tos.empty? -%>
+@synthesize <%= object.belongs_tos.map{|x|"_#{x[:name]}"}.join(', ') %>;
+<% end -%>
+<% unless object.has_manies.empty? -%>
+@synthesize <%= object.has_manies.map{|x|"_#{x[:name]}"}.join(', ') %>;
+<% end -%>
 
 <% object.methods.each do |method| -%>
 <%= method[:signature] %> {
@@ -39,6 +49,51 @@
   return success;
 }
 
+#pragma mark Relationships
+
+<% object.belongs_tos.each do |field| -%>
+-(<%= field[:type] %>)<%= field[:name] %> {
+  if (<%= field[:fk] %> == nil)
+    return nil;
+  else if (_<%= field[:name] %> == nil)
+    _<%= field[:name] %> = [<%= field[:type].gsub(' *','') %> findByPk:<%= field[:fk] %>];
+  return _<%= field[:name] %>;
+}
+
+-(<%= field[:type] %>)<%= field[:name] %>WithReload {
+  if (<%= field[:fk] %> == nil)
+    return nil;
+  _<%= field[:name] %> = [<%= field[:type].gsub(' *','') %> findByPk:<%= field[:fk] %>];
+  return _<%= field[:name] %>;
+}
+
+-(void)set<%= field[:name].camelize %>:(<%= field[:type] %>)obj {
+  <%= field[:fk] %> = [obj pk];
+  [_<%= field[:name] %> release];
+  [obj retain];
+  _<%= field[:name] %> = obj;
+}
+
+<% end -%>
+<% object.has_manies.each do |field| -%>
+-(NSArray *)<%= field[:name] %> {
+  if (_<%= field[:name] %> == nil)
+    _<%= field[:name] %> = [<%= field[:type].gsub(' *','').singularize %> findWhere:@"<%= field[:fk] %> = ?", pk];
+  return _<%= field[:name] %>;
+}
+
+-(NSArray *)<%= field[:name] %>WithReload {
+  _<%= field[:name] %> = [<%= field[:type].gsub(' *','').singularize %> findWhere:@"<%= field[:fk] %> = ?", pk];
+  return _<%= field[:name] %>;
+}
+
+-(int)<%= field[:name] %>Count {
+  if (_<%= field[:name] %> == nil)
+    return [<%= field[:type].gsub(' *','').singularize %> countWhere:@"<%= field[:fk] %> = ?", pk];
+  return [_<%= field[:name] %> count];
+}
+
+<% end -%>
 #pragma mark Helper Methods
 
 
@@ -56,6 +111,12 @@
 - (void)dealloc {
 <% object.fields.each do |field| -%>
   [<%= field[:name] %> release];
+<% end -%>
+<% object.belongs_tos.each do |field| -%>
+  [_<%= field[:name] %> release];
+<% end -%>
+<% object.has_manies.each do |field| -%>
+  [_<%= field[:name] %> release];
 <% end -%>
 	[super dealloc];
 }

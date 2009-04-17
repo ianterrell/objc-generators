@@ -1,13 +1,16 @@
 require "#{File.dirname(__FILE__)}/base-gen"
 
 class FrankObject < BaseGeneratorObject
-  attr_accessor :name, :fields, :class_references, :enums
+  attr_accessor :name, :fields, :class_references, :enums, :belongs_tos, :class_includes, :has_manies
   
   def initialize(name)
     super()
     @name = name.to_s.camelize
     @fields = []
     @class_references = []
+    @class_includes = []
+    @belongs_tos = []
+    @has_manies = []
     @enums = []
   end
   
@@ -26,8 +29,18 @@ class FrankObject < BaseGeneratorObject
   
   def belongs_to(object, options={})
     @class_references << object.to_s.camelize unless @class_references.include?(object.to_s.camelize)
+    @class_includes << object.to_s.camelize unless @class_includes.include?(object.to_s.camelize)
     name = options[:name] || object
-    @fields << { :type => "#{object.to_s.camelize} *", :name => name.to_s.camelize(:lower) }
+    fk = options[:fk] || "#{object}_pk"
+    @fields << { :type => "NSNumber *", :name => fk.to_s.camelize(:lower), :fk => fk }
+    @belongs_tos << { :type => "#{name.to_s.camelize} *", :name => name.to_s.camelize(:lower), :fk => fk.to_s.camelize(:lower) }
+  end
+  
+  def has_many(objects, options={})
+    @class_includes << objects.to_s.singularize.camelize unless @class_includes.include?(objects.to_s.singularize.camelize)
+    name = options[:name] || objects
+    fk = options[:fk] || "#{@name.underscore}_pk"
+    @has_manies << { :type => "#{objects.to_s.camelize} *", :name => name.to_s.camelize(:lower), :fk => fk }
   end
   
   def field_names
