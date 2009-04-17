@@ -1,6 +1,7 @@
 These are libraries to generate repetitive Objective-C files out of quick Ruby templates.
 
 Generators:
+* FrankORMGenerator:  Generates models for FrankORM!  (http://github.com/ianterrell/frankorm/tree/master)
 * SqlitePOGenerator:  Generates models that descend from SQLitePersistentObject (http://code.google.com/p/sqlitepersistentobjects/).
 * PreferencesGenerator:  Generates a helper class to manage preferences on the iPhone.
 
